@@ -26,6 +26,14 @@ func index(w http.ResponseWriter, r *http.Request) {
 		}
 		defer uploadfile.Close()
 		fmt.Println(handler.Header)
+        dir, err := os.Open("./files")
+        if err != nil {
+            if os.IsNotExist(err) {
+                fmt.Println("./files dir is not exist")
+            }
+            return
+        }
+        defer dir.Close()
 		localfile, err := os.OpenFile("./files/"+handler.Filename, os.O_WRONLY|os.O_CREATE, 0664)
 		if err != nil {
 			fmt.Println(err)
