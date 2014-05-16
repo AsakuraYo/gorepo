@@ -5,18 +5,18 @@ import "time"
 import "math/rand"
 
 
-func Count(ch chan int, i int) {
+func workRoutine(ch chan int, workerNo int) {
     r := rand.New(rand.NewSource(time.Now().Unix()))
-    for n := 0; n <= i; n++ {
+    for n := 0; n <= workerNo; n++ {
         sec := r.Intn(10)
-        if n == i {
-            fmt.Println("Task", i, "will work", sec, "second.")
+        if n == workerNo {
+            fmt.Println("Worker", workerNo, "will work", sec, "second.")
             time.Sleep(time.Duration(sec) * time.Second)
             break
         }
     }
-    fmt.Println("Task", i, "finish")
-    ch <- i
+    fmt.Println("Worker", workerNo, "finish")
+    ch <- workerNo
 }
 
 
@@ -28,7 +28,7 @@ func main() {
     chs := make([]chan int, taskCount)
     for i := 0; i < taskCount; i++ {
         chs[i] = make(chan int)
-        go Count(chs[i], i)
+        go workRoutine(chs[i], i)
     }
 
     // start time limit

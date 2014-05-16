@@ -6,19 +6,19 @@ import "crypto/aes"
 //import "strings"
 
 type Encryptor interface {
-    Encrypt(source, key []byte) (output []byte)
+    Encrypt(source []byte, key string) []byte
 }
 
 type Decryptor interface {
-    Decrypt(source, key []byte) (output []byte)
+    Decrypt(source []byte, key string) []byte
 }
 
 type AES struct {
 }
 
-func (a *AES)Encrypt(source, key []byte) (output []byte) {
+func (a *AES)Encrypt(source []byte, key string) []byte {
     aesKeyBytes := make([]byte, aes.BlockSize)
-    copy(aesKeyBytes, key)
+    copy(aesKeyBytes, []byte(key))
 
     cipher, err := aes.NewCipher(aesKeyBytes)
     if err != nil {
@@ -32,6 +32,7 @@ func (a *AES)Encrypt(source, key []byte) (output []byte) {
     sourceBytes := make([]byte, outLen)
     copy(sourceBytes, source[:])
 
+    var output []byte
     for i := 0; i < outLen; i = i + aes.BlockSize {
         outTemp := make([]byte, aes.BlockSize)
         cipher.Encrypt(outTemp, sourceBytes[i : i + aes.BlockSize])
@@ -40,9 +41,9 @@ func (a *AES)Encrypt(source, key []byte) (output []byte) {
     return output
 }
 
-func (a *AES)Decrypt(source, key []byte) (output []byte) {
+func (a *AES)Decrypt(source []byte, key string) []byte {
     aesKeyBytes := make([]byte, aes.BlockSize)
-    copy(aesKeyBytes, key)
+    copy(aesKeyBytes, []byte(key))
 
     cipher, err := aes.NewCipher(aesKeyBytes)
     if err != nil {
@@ -50,6 +51,7 @@ func (a *AES)Decrypt(source, key []byte) (output []byte) {
     }
 
     inLen := len(source)
+    var output []byte
     for i := 0; i < inLen; i = i + aes.BlockSize {
         outTemp := make([]byte, aes.BlockSize)
         cipher.Decrypt(outTemp, source[i : i + aes.BlockSize])
