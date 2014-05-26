@@ -1,3 +1,0 @@
-go tool 6g hello.go
-go tool 6l hello.6
-./6.out

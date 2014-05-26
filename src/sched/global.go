@@ -16,12 +16,12 @@ const (
     LIB_DIR = "lib"
 )
 
-var ErrEnvironmentNotSet = errors.New(HOME_VAR + " environment variable not set!")
+var EnvNotSetErr = errors.New(HOME_VAR + " environment variable not set!")
 
 func HomeDir() (homeDir string, err error) {
     homeDir = os.Getenv(HOME_VAR)
     if len(homeDir) == 0 {
-        err = ErrEnvironmentNotSet
+        err = EnvNotSetErr
         return
     }
     return

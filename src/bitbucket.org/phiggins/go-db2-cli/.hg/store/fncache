@@ -1,0 +1,5 @@
+data/.hgignore.i
+data/mgodbc.go.i
+data/Makefile.i
+data/README.md.i
+data/LICENSE.i

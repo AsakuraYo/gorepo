@@ -8,9 +8,11 @@ import (
     "io"
 )
 
+var (
+    listenFlag = flag.Bool("l", false, "listen for an incoming connection rather than connect to it")
+)
+
 func main () {
-    var listenFlag bool
-    flag.BoolVar(&listenFlag, "l", false, "listen for an incoming connection rather than connect to it")
     flag.Parse()
 
     if flag.NArg() != 2 {
@@ -22,7 +24,7 @@ func main () {
     port := flag.Arg(1)
     addr := net.JoinHostPort(hostname, port)
 
-    if listenFlag == true {
+    if *listenFlag == true {
         // as a server
         listener, err := net.Listen("tcp", addr)
         if err != nil {
